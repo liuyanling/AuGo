@@ -45,6 +45,18 @@ func TestInsert(t *testing.T) {
 	}
 }
 
+func (ot *OrderTestCase) RunShellTest(t *testing.T) {
+	ot.input = ShellSort(ot.input)
+	if !reflect.DeepEqual(ot.input, ot.expect) {
+		t.Error("Unexpected result, expect: ", ot.expect, " result: ", ot.input)
+	}
+}
+func TestShell(t *testing.T) {
+	for _, testcase := range testCases {
+		testcase.RunShellTest(t);
+	}
+}
+
 func TestPressure(t *testing.T) {
 		startTime := time.Now().UnixNano()
 	var input [100000]int
@@ -62,6 +74,9 @@ func TestPressure(t *testing.T) {
 	_ = SelectSort(inputSlice)
 	endTime2 := time.Now().UnixNano()
 	fmt.Println("select sort end at ", endTime2, " cost: ", endTime2-endTime, "nano second")
+	_ = ShellSort(inputSlice)
+	endTime3 := time.Now().UnixNano()
+	fmt.Println("shell sort end at ", endTime3, " cost: ", endTime3-endTime2, "nano second")
 }
 
 /**
