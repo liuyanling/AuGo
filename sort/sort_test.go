@@ -12,9 +12,9 @@ type OrderTestCase struct {
 	input, expect []int
 }
 
-func (st *OrderTestCase) RunTest(t *testing.T) {
-	var result = SelectSort(st.input)
-	if !reflect.DeepEqual(st.expect, result) {
+func (st *OrderTestCase) RunSelectTest(t *testing.T) {
+	var result = SelectSort(st.input[:])
+	if !reflect.DeepEqual(result, st.expect) {
 		t.Error("Unexpected result, expected: ", st.expect, " result:", result)
 	}
 }
@@ -26,57 +26,80 @@ var testCases = []OrderTestCase {
 	{ []int{100,90,118,6000,5,4}, []int{4,5,90,100,118,6000} },
 }
 
-func TestSelect(t *testing.T) {
+func sTestSelect(t *testing.T) {
 	for _, testcase := range testCases {
-		testcase.RunTest(t)
+		testcase.RunSelectTest(t)
 	}
 }
 
 func (ot *OrderTestCase) RunInsertTest(t *testing.T) {
-	ot.input = InsertSort(ot.input)
-	if !reflect.DeepEqual(ot.input, ot.expect) {
-		t.Error("Unexpected result, expect: ", ot.expect, " result: ", ot.input)
+	res := InsertSort(ot.input[:])
+	if !reflect.DeepEqual(res, ot.expect) {
+		t.Error("Unexpected result, expect: ", ot.expect, " result: ", res)
 	}
 }
 
-func TestInsert(t *testing.T) {
+func sTestInsert(t *testing.T) {
 	for _, testcase := range testCases {
 		testcase.RunInsertTest(t)
 	}
 }
 
 func (ot *OrderTestCase) RunShellTest(t *testing.T) {
-	ot.input = ShellSort(ot.input)
-	if !reflect.DeepEqual(ot.input, ot.expect) {
-		t.Error("Unexpected result, expect: ", ot.expect, " result: ", ot.input)
+	res := ShellSort(ot.input[:])
+	if !reflect.DeepEqual(res, ot.expect) {
+		t.Error("Unexpected result, expect: ", ot.expect, " result: ", res)
 	}
 }
-func TestShell(t *testing.T) {
+func sTestShell(t *testing.T) {
 	for _, testcase := range testCases {
 		testcase.RunShellTest(t);
 	}
 }
 
+func (ot *OrderTestCase) RunMergeTest(t *testing.T) {
+	fmt.Println("input", ot.input)
+	res := MergeSort(ot.input[:])
+	if !reflect.DeepEqual(res, ot.expect) {
+		t.Error("Unexpected result, expect: ", ot.expect, " result: ", res)
+	}
+}
+
+func TestMerge(t *testing.T) {
+	for _, testcase := range testCases {
+		testcase.RunMergeTest(t)
+	}
+}
+
 func TestPressure(t *testing.T) {
-		startTime := time.Now().UnixNano()
-	var input [100000]int
+//	startTime := time.Now().UnixNano()
+	var input [1000000]int
 	randSource := rand.NewSource(time.Now().Unix())
 	r := rand.New(randSource)
-	for i:=0; i<100000; i++ {
-		input[i] = r.Intn(5000)
+	for i:=0; i<1000000; i++ {
+		input[i] = r.Intn(500000)
 	}
-	inputSlice := input[:len(input)-100]
-
-	fmt.Println("start at ", startTime)
-	_ = InsertSort(inputSlice)
-	endTime := time.Now().UnixNano()
-	fmt.Println("insert sort end at ", endTime, " cost: ", endTime-startTime, "nano second")
-	_ = SelectSort(inputSlice)
+//	inputSlice := input[:]
+	fmt.Println("start at ", time.Now())
+//	_ = InsertSort(inputSlice)
+//	endTime := time.Now().UnixNano()
+//	fmt.Println("insert sort cost: ", endTime-startTime, "nano second")
+//	_ = SelectSort(inputSlice)
 	endTime2 := time.Now().UnixNano()
-	fmt.Println("select sort end at ", endTime2, " cost: ", endTime2-endTime, "nano second")
-	_ = ShellSort(inputSlice)
+//	fmt.Println("select sort cost: ", endTime2-endTime, "nano second")
+	_ = ShellSort(input[:])
 	endTime3 := time.Now().UnixNano()
-	fmt.Println("shell sort end at ", endTime3, " cost: ", endTime3-endTime2, "nano second")
+	fmt.Println("shell sort cost: ", endTime3-endTime2, "nano second")
+	
+	var input2 [10000000]int
+	for i:=0; i<10000000; i++ {
+		input2[i] = r.Intn(500000)
+	}
+	endTime3_ := time.Now().UnixNano()
+	mResult := MergeSort(input2[:])
+	endTime4 := time.Now().UnixNano()
+	fmt.Println("merge sort cost: ", endTime4-endTime3_, "nano second")
+	fmt.Println("merge result part: ", mResult[1000:1020])
 }
 
 /**
