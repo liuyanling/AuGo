@@ -1,14 +1,36 @@
 package sort
 
-import "fmt"
+//import "fmt"
 
 var tmp []int
 
 func MergeSort(arr []int) []int {
-	tmp = make([]int, len(arr)+1)
-	copy(tmp, arr)
+	tmp = make([]int, len(arr))
 	mergeInnerSort(arr, 0, len(arr)-1)
 	return arr
+}
+
+/**
+ * merge sort from down to up
+ */
+func MergeDToU(arr []int) []int {
+	n := len(arr)
+	var sz, lo int
+	tmp = make([]int, n)
+	for sz=1; sz < n; sz += sz {
+		for lo=0; lo<n-sz; lo += sz+sz {
+			merge(arr, lo, lo+sz-1, min(lo+sz+sz-1, n-1))
+		}
+	}
+	return arr
+}
+
+func min(a, b int) int {
+	if a>b {
+		return b
+	} else {
+		return a
+	}
 }
 
 func mergeInnerSort(arr []int, lo, hi int) {
@@ -31,9 +53,11 @@ func mergeInnerSort(arr []int, lo, hi int) {
  * lo<=mid<=hi
  */
 func merge(arr []int, lo, mid, hi int) {
-	fmt.Println("merge:", lo, mid, hi)
+	for i:=lo; i<=hi; i++ {
+		tmp[i] = arr[i]
+	}
 	j := mid+1
-	for k:=0; k<=hi; k++ {
+	for k:=lo; k<=hi; k++ {
 		if lo>mid {
 			arr[k] = tmp[j]
 			j++
