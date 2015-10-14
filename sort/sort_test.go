@@ -97,6 +97,7 @@ func (ot *OrderTestCase) RunQuickTest(t *testing.T) {
 	if !reflect.DeepEqual(res, ot.expect) {
 		t.Error("Unexpected result, expect: ", ot.expect, " result: ", res)
 	}
+	// t.Log("pass one")
 }
 
 func TestQuickSort(t *testing.T) {
