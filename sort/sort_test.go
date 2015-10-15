@@ -106,7 +106,7 @@ func TestQuickSort(t *testing.T) {
 	}
 }
 
-func sTestPressure(t *testing.T) {
+func TestPressure(t *testing.T) {
 //	startTime := time.Now().UnixNano()
 	var input [10000000]int
 	randSource := rand.NewSource(time.Now().Unix())
@@ -137,7 +137,11 @@ func sTestPressure(t *testing.T) {
 	endTime4_ := time.Now().UnixNano()
 	MergeDToU(append(input2[:], 12222))
 	endTime5 := time.Now().UnixNano()
-	fmt.Println("dtoup", len(input2)," sort cost: ", endTime5-endTime4_, "nano second")
+	fmt.Println("dtoup", len(input2),"sort cost: ", endTime5-endTime4_, "nano second")
+	endTime5_ := time.Now().UnixNano()
+	QuickSort(append(input2[:], 12))
+	endTime6 := time.Now().UnixNano()
+	fmt.Println("quick", len(input2),"sort cost: ", endTime6-endTime5_, "nano second")
 	// fmt.Println("merge result part: ", mResult[1000:1020])
 }
 
