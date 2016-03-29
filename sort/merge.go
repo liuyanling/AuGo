@@ -10,9 +10,9 @@ func MergeSort(arr []int) []int {
 	return arr
 }
 
-/**
- * merge sort from down to up
- */
+
+ // MergeDToU merge sort from down to up
+ //
 func MergeDToU(arr []int) []int {
 	n := len(arr)
 	var sz, lo int
